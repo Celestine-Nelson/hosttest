@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Organization - Donate & Ledger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-green-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Nigeria Next Generation</h1>
+            <div>
+                <a href="https://nigeria-ng.com/" class="mx-2 hover:underline">Home</a>
+                <a href="#donate" class="mx-2 hover:underline">Donate</a>
+                <a href="#ledger" class="mx-2 hover:underline">Ledger</a>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="py-16 text-center bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold mb-4">Welcome to Our Mission</h2>
+            <p class="text-lg mb-6">We empower communities through transparent funding. Support our projects by donating today!</p>
+            <a href="#donate" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-gree-700">Make a Donation</a>
+        </div>
+    </section>
+
+    <!-- Donation Section -->
+    <section id="donate" class="py-16 bg-gray-100">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">Support Our Cause</h2>
+            <p class="text-lg mb-6">Your contributions fund sustainable projects. Choose an amount and pay securely.</p>
+            <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+                <form id="paymentForm">
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="email" class="mt-1 p-2 w-full border rounded-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="amount" class="block text-sm font-medium text-gray-700">Donation Amount (USD)</label>
+                        <input type="number" id="amount" class="mt-1 p-2 w-full border rounded-lg" min="1" required>
+                    </div>
+                    <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">Donate Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ledger Section -->
+    <section id="ledger" class="py-16 bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4">Transparent Ledger</h2>
+            <p class="text-lg text-center mb-6">See how your donations are allocated. All transactions are public for accountability.</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 border">Date</th>
+                            <th class="px-4 py-2 border">Donor Email</th>
+                            <th class="px-4 py-2 border">Amount (USD)</th>
+                            <th class="px-4 py-2 border">Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledgerTable">
+                        <!-- Mock data; replace with dynamic data from backend -->
+                        <tr>
+                            <td class="px-4 py-2 border">2025-07-01</td>
+                            <td class="px-4 py-2 border">Mr Ali donor1@example.com</td>
+                            <td class="px-4 py-2 border">$100</td>
+                            <td class="px-4 py-2 border">Community Project</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 border">2025-07-02</td>
+                            <td class="px-4 py-2 border">Mr Bidemi donor2@example.com</td>
+                            <td class="px-4 py-2 border">$50</td>
+                            <td class="px-4 py-2 border">Education Fund</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-600 text-white p-4 text-center">
+        <p>&copy; 2025 NNG. All rights reserved.</p>
+        <a href="NNG3 Donation Portal Review.pdf" class="mt-2 inline-block bg-green-900 text-white px-4 py-2 rounded-lg hover:bg-green-800" target="_blank">View Our Solution Comparison Report</a>
+    </footer>
+
+    <!-- Paystack Script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+        const paymentForm = document.getElementById('paymentForm');
+        paymentForm.addEventListener('submit', payWithPaystack, false);
+
+        function payWithPaystack(e) {
+            e.preventDefault();
+            let handler = PaystackPop.setup({
+                key: 'pk_test_your_public_key_here', // Replace with your Paystack public key
+                email: document.getElementById('email').value,
+                amount: document.getElementById('amount').value * 100, // Paystack expects amount in kobo (cents)
+                currency: 'USD', // Change to your preferred currency (e.g., NGN for Nigeria)
+                ref: 'REF' + Math.floor((Math.random() * 1000000000) + 1), // Unique transaction reference
+                onClose: function() {
+                    alert('Payment window closed.');
+                },
+                callback: function(response) {
+                    alert('Payment successful! Reference: ' + response.reference);
+                    // TODO: Send response.reference to your backend to verify and store transaction
+                }
+            });
+            handler.openIframe();
+        }
+    </script>
+</body>
+</html>
